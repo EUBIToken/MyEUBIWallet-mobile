@@ -43,8 +43,8 @@
 			<input id="sendto" class="grey lighten-4" style="font-size: 5em;min-height: 1em;"></input>
 			<h2>EUBI/bEUBI amount</h2>
 			<input id="eubiamount" class="grey lighten-4" style="font-size: 5em;min-height: 1em;"></input>
-			<button id="sendEubiButton" class="waves-effect waves-light teal col s12 red" onclick="sendeubitx('transfer');"><h2 style="color: white;">Send</h2></button>
-			<button id="approveEubiButton" class="waves-effect waves-light teal col s12 red" onclick="sendeubitx('approve');"><h2 style="color: white;">Approve</h2></button>
+			<button id="sendEubiButton" class="waves-effect waves-light teal col s12 red" onclick="sendmode = 'transfer';SendEUBIModalInstance.open();"><h2 style="color: white;">Send</h2></button>
+			<button id="approveEubiButton" class="waves-effect waves-light teal col s12 red" onclick="sendmode = 'approve';SendEUBIModalInstance.open();"><h2 style="color: white;">Approve</h2></button>
 		</div>
 		<div id="MultipurpuseModal" class="modal">
 			<div class="modal-content">
