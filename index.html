@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<title>MyEUBIWallet v2.0: Ultimate EUBI web wallet</title>
+	</head>
+	<body style="background-image: url('https://media.istockphoto.com/photos/coins-of-various-cryptocurrencies-picture-id1034363382?k=20&m=1034363382&s=612x612&w=0&h=sCpRmOSicsJJS73_iNQh16nqeBgFKqU3jjfC4u42D_k=');background-repeat: no-repeat;background-attachment: fixed;background-size: cover;">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css" integrity="sha512-t38vG/f94E72wz6pCsuuhcOPJlHKwPy+PY+n1+tJFzdte3hsIgYE7iEpgg/StngunGszVMrRfvwZinrza0vMTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+		<script src="thirdparty.js"></script>
+		<h2 class="blue" style="color: white;">MyEUBIWallet v2.0 Mobile</h2>
+		<div class="blue-grey lighten-5 container row" id="beforeWalletLoad">
+			<div id="loadmode2" class="col s12 row">
+				<h2>Welcome to MyEUBIWallet! Before you can use MyEUBIWallet, you need to load your wallet. How would you want to load your wallet?</h2>
+				<button class="waves-effect waves-light teal col s12" onclick="loadWallet();"><h2 style="color: white;">Private key</h2></button>
+				<button class="waves-effect waves-light teal col s12" onclick="createWallet();"><h2 style="color: white;">Create Wallet</h2></button>
+				<button class="waves-effect waves-light teal col s12" onclick="loadmode2.style.display = 'none';loadmode3.style.display = 'block';"><h2 style="color: white;">Use browser storage</h2></button>
+			</div>
+			<div id="loadmode3" class="col s12 row" style="display: none;">
+				<form id="listofwallets">
+				
+				</form>
+				<input id="pass3" type="password" class="grey lighten-4" style="font-size: 5em;min-height: 1em;"></input>
+				<button class="waves-effect waves-light teal col s12" onclick="loadWallet2();"><h2 style="color: white;">Load Wallet</h2></button>
+				<button class="waves-effect waves-light red col s12" onclick="deleteWalletModalInstance.open();"><h2 style="color: white;">Delete wallet</h2></button>
+				<div class="s12">
+					<h2>Or you can rename the wallet. Just enter the wallet's new name.</h2>
+				</div>
+				<input id="storedWalletName2" type="text" class="grey lighten-4" style="font-size: 5em;min-height: 1em;"></input>
+				<button class="waves-effect waves-light teal col s12" onclick="renameWallet();"><h2 style="color: white;">Rename wallet</h2></button>
+			</div>
+		</div>
+		</div>
+		<div class="blue-grey lighten-5 container row" id="afterWalletLoad" style="display: none;">
+			<h2>Welcome to your EUBI and bEUBI web wallet!</h2>
+			<h2 id="myWalletAddress"></h2>
+			<h2 id="eubiBalance">Fetching EUBI balance...</h2>
+			<h2 id="nativeBalance">Fetching MintME balance...</h2>
+			<button class="waves-effect waves-light teal col s12" onclick="reloadWallet();"><h2 style="color: white;">Reload wallet</h2></button>
+			<button class="waves-effect waves-light teal col s12" onclick="navigator.clipboard.writeText(privateKeyRAW)"><h2 style="color: white;">Copy private key</h2></button>
+			<button class="waves-effect waves-light teal col s12" onclick="navigator.clipboard.writeText(walletAddressRAW)"><h2 style="color: white;">Copy wallet address</h2></button>
+			<button class="waves-effect waves-light teal col s12 red" onclick="logout();"><h2 style="color: white;">Unload wallet</h2></button>
+			<h2>Receiver's address</h2>
+			<input id="sendto" class="grey lighten-4" style="font-size: 5em;min-height: 1em;"></input>
+			<h2>EUBI/bEUBI amount</h2>
+			<input id="eubiamount" class="grey lighten-4" style="font-size: 5em;min-height: 1em;"></input>
+			<button id="sendEubiButton" class="waves-effect waves-light teal col s12 red" onclick="sendeubitx('transfer');"><h2 style="color: white;">Send</h2></button>
+			<button id="approveEubiButton" class="waves-effect waves-light teal col s12 red" onclick="sendeubitx('approve');"><h2 style="color: white;">Approve</h2></button>
+		</div>
+		<div id="MultipurpuseModal" class="modal">
+			<div class="modal-content">
+				<h2 id="walletMessage">Undefined modal</h2>
+				<br/>
+				<h2 class="modal-close" onclick="walletMessage.innerHTML = 'Undefined modal';" style="float: right; color: green;">Ok</h2>
+			</div>
+		</div>
+		<div id="SendEUBIModal" class="modal">
+			<div class="modal-content">
+				<h2 id="SendEubiMessage2">Are you sure you want to send EUBI?</h2>
+				<h2 class="modal-close" style="float: right; color: red;">No</h2>
+				<h2 class="modal-close" style="float: right; color: green;width: 2em;" onclick="sendeubitx(sendmode);">Yes</h2>
+			</div>
+		</div>
+		<div id="NativeSendModal" class="modal">
+			<div class="modal-content">
+				<h2 id="SendNativeMessage2">Are you sure you want to send EUBI?</h2>
+				<h2 class="modal-close" style="float: right; color: red;">No</h2>
+				<h2 class="modal-close" style="float: right; color: green;width: 2em;" onclick="NativeSend();">Yes</h2>
+			</div>
+		</div>
+		<div id="WithdrawDividendsModal" class="modal">
+			<div class="modal-content">
+				<h2>Are you sure you want to withdraw dividends?</h2>
+				<h2 class="modal-close" style="float: right; color: red;">No</h2>
+				<h2 class="modal-close" style="float: right; color: green;width: 2em;" onclick="ManageDividends('withdraw');">Yes</h2>
+			</div>
+		</div>
+		<div id="UnstakeTokensModal" class="modal">
+			<div class="modal-content">
+				<h2>Are you sure you want to unstake tokens?</h2>
+				<h2 class="modal-close" style="float: right; color: red;">No</h2>
+				<h2 class="modal-close" style="float: right; color: green;width: 2em;" onclick="ManageDividends('unstake');">Yes</h2>
+			</div>
+		</div>
+		<div id="RPGFModal" class="modal">
+			<div class="modal-content">
+				<h2>Are you sure you want to redeem preauthorized transaction?</h2>
+				<h2 class="modal-close" style="float: right; color: red;">No</h2>
+				<h2 class="modal-close" style="float: right; color: green;width: 2em;" onclick="redeemRPGF();">Yes</h2>
+			</div>
+		</div>
+		<div id="deleteWalletModal" class="modal">
+			<div class="modal-content">
+				<h2>Are you sure you want to delete this wallet?</h2>
+				<h2 class="modal-close" style="float: right; color: red;">No</h2>
+				<h2 class="modal-close" style="float: right; color: green;width: 2em;" onclick="deleteWallet();">Yes</h2>
+			</div>
+		</div>
+		<script src="scripts.js"></script>
+	</body>
+</html>
